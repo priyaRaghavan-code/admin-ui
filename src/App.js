@@ -1,24 +1,13 @@
-import logo from './logo.svg';
-import './App.css';
+import { SearchBar } from "./lib/components/SearchBar";
+import { Table } from "./lib/components/Table";
+import { mockResponseData } from "./lib/utils/data";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <main className="flex flex-col items-center max-w-6xl mx-auto m-4 gap-4">
+      <SearchBar />
+      <Table rows={mockResponseData} />
+    </main>
   );
 }
 
