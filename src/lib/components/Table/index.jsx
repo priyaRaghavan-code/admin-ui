@@ -1,9 +1,13 @@
 import { BiEdit } from "react-icons/bi";
 import { AiOutlineDelete } from "react-icons/ai";
 
-export function Table({ rows, onDelete }) {
+export function Table({ rows, onDelete, onEdit }) {
   const deleteRow = (id) => {
     onDelete(id);
+  };
+
+  const editRow = (id) => {
+    onEdit(id);
   };
 
   return (
@@ -34,7 +38,10 @@ export function Table({ rows, onDelete }) {
                 <td className="px-4 py-3 my-2">{e.email}</td>
                 <td className="px-4 py-3 my-2">{e.role}</td>
                 <td className="px-4 py-3 my-2 flex flex-row justify-start items-center gap-6">
-                  <BiEdit className="text-xl text-gray-500 hover:text-gray-900 shadow-2xl" />
+                  <BiEdit
+                    onClick={() => editRow(e.id)}
+                    className="text-xl text-gray-500 hover:text-gray-900 shadow-2xl"
+                  />
                   <AiOutlineDelete
                     onClick={() => deleteRow(e.id)}
                     className="text-xl text-red-800 hover:text-red-500 shadow-2xl"
