@@ -1,5 +1,7 @@
 import { BiEdit } from "react-icons/bi";
 import { AiOutlineDelete } from "react-icons/ai";
+import { useState, useMemo } from "react";
+import { Pagination } from "../Pagination";
 
 export function Table({ rows, onDelete, onEdit }) {
   const deleteRow = (id) => {
@@ -9,6 +11,16 @@ export function Table({ rows, onDelete, onEdit }) {
   const editRow = (id) => {
     onEdit(id);
   };
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const PageSize = 10;
+
+  const currentTableData = useMemo(() => {
+    const firstPageIndex = (currentPage - 1) * PageSize;
+    const lastPageIndex = firstPageIndex + PageSize;
+    return rows.slice(firstPageIndex, lastPageIndex);
+  }, [currentPage, rows]);
 
   return (
     <>
@@ -25,7 +37,7 @@ export function Table({ rows, onDelete, onEdit }) {
           </tr>
         </thead>
         <tbody>
-          {rows.map((e) => {
+          {currentTableData.map((e) => {
             return (
               <tr
                 key={e.id}
@@ -52,6 +64,12 @@ export function Table({ rows, onDelete, onEdit }) {
           })}
         </tbody>
       </table>
+      <Pagination
+        currentPage={currentPage}
+        totalCount={rows.length}
+        pageSize={PageSize}
+        onPageChange={(page) => setCurrentPage(page)}
+      />
     </>
   );
 }

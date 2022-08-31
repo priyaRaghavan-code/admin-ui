@@ -9,6 +9,7 @@ export function EditDialog({ initialValue }) {
 
   const onCancel = () => {
     trigger("editCancel");
+    setIsActive(false);
   };
 
   const onSubmit = () => {
