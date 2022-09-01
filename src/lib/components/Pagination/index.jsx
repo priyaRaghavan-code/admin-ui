@@ -29,7 +29,7 @@ export function Pagination({
 
   return (
     <ul className="flex flex-row gap-4 flex-wrap">
-      <li>
+      <li key={"<"}>
         <RoundedButton
           onClick={onPrevious}
           disabled={currentPage === 1}
@@ -39,14 +39,14 @@ export function Pagination({
       {paginationRange.map((pageNumber) => {
         if (pageNumber === DOTS) {
           return (
-            <li>
+            <li key={DOTS + pageNumber}>
               <RoundedButton text={"..."} />
             </li>
           );
         }
 
         return (
-          <li>
+          <li key={pageNumber}>
             <RoundedButton
               isActive={pageNumber === currentPage}
               onClick={() => {
@@ -57,7 +57,7 @@ export function Pagination({
           </li>
         );
       })}
-      <li>
+      <li key={">"}>
         <RoundedButton
           onClick={onNext}
           text={">"}
