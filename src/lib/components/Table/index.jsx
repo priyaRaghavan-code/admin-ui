@@ -1,15 +1,27 @@
 import { BiEdit } from "react-icons/bi";
 import { AiOutlineDelete } from "react-icons/ai";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Pagination } from "../Pagination";
 
-export function Table({ rows, onDelete, onEdit }) {
+export function Table({ rows, onDelete, onEdit, deleteSelected }) {
+  const [selected, setSelected] = useState([]);
+
   const deleteRow = (id) => {
     onDelete(id);
   };
 
   const editRow = (id) => {
     onEdit(id);
+  };
+
+  const changeHandler = () => {
+    if (currentTableData.every((e) => selected.includes(e.id))) setSelected([]);
+    else setSelected(currentTableData.map((e) => e.id));
+  };
+
+  const rowChangeHandler = (id) => {
+    if (selected.includes(id)) setSelected(selected.filter((e) => e !== id));
+    else setSelected([...selected, id]);
   };
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -22,13 +34,23 @@ export function Table({ rows, onDelete, onEdit }) {
     return rows.slice(firstPageIndex, lastPageIndex);
   }, [currentPage, rows]);
 
+  useEffect(() => {
+    setSelected([]);
+  }, [currentPage]);
+
   return (
     <>
       <table className="w-full table-fixed border-collapse bg-white">
         <thead>
           <tr className="font-bold text-gray-600 text-lg border-b">
             <th className="px-4 py-2 text-left">
-              <input type="checkbox" name="select-all" id="select-all" />
+              <input
+                type="checkbox"
+                name="select-all"
+                id="select-all"
+                checked={currentTableData.every((e) => selected.includes(e.id))}
+                onChange={changeHandler}
+              />
             </th>
             <th className="px-4 py-2 text-left">Name</th>
             <th className="px-4 py-2 text-left">Email</th>
@@ -44,7 +66,13 @@ export function Table({ rows, onDelete, onEdit }) {
                 className="border-b text-gray-700 hover:text-gray-900 hover:bg-gray-50"
               >
                 <td className="px-4 py-3 my-2">
-                  <input type="checkbox" name="select-a" id="select-a" />
+                  <input
+                    type="checkbox"
+                    checked={selected.includes(e.id)}
+                    onChange={() => rowChangeHandler(e.id)}
+                    name="select-a"
+                    id="select-a"
+                  />
                 </td>
                 <td className="px-4 py-3 my-2">{e.name}</td>
                 <td className="px-4 py-3 my-2">{e.email}</td>
@@ -64,12 +92,20 @@ export function Table({ rows, onDelete, onEdit }) {
           })}
         </tbody>
       </table>
-      <Pagination
-        currentPage={currentPage}
-        totalCount={rows.length}
-        pageSize={PageSize}
-        onPageChange={(page) => setCurrentPage(page)}
-      />
+      <span className="flex flex-row justify-between w-full items-center">
+        <button
+          className="px-8 py-2 bg-red-400 text-white rounded-full hover:bg-red-500 hover:shadow hover:shadow-red-300"
+          onClick={() => deleteSelected(selected)}
+        >
+          Delete
+        </button>
+        <Pagination
+          currentPage={currentPage}
+          totalCount={rows.length}
+          pageSize={PageSize}
+          onPageChange={(page) => setCurrentPage(page)}
+        />
+      </span>
     </>
   );
 }

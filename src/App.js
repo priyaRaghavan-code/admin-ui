@@ -31,6 +31,10 @@ function App() {
     setWorkbenchData(workbenchData.filter((e) => e.id !== id));
   };
 
+  const deleteSelected = (selected) => {
+    setWorkbenchData(workbenchData.filter((e) => !selected.includes(e.id)));
+  };
+
   useEffect(() => {
     const fetchUsers = async () => {
       const response = await fetch(
@@ -86,7 +90,12 @@ function App() {
   ) : errorMessage ? (
     <p className="text-sm text-red-400">{errorMessage}</p>
   ) : workbenchData.length > 0 ? (
-    <Table rows={workbenchData} onDelete={deleteRow} onEdit={editRequest} />
+    <Table
+      rows={workbenchData}
+      onDelete={deleteRow}
+      onEdit={editRequest}
+      deleteSelected={deleteSelected}
+    />
   ) : (
     <p className="text-sm text-red-600">No records found</p>
   );
