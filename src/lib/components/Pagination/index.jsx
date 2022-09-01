@@ -1,5 +1,6 @@
 import { RoundedButton } from "../../components/RoundedButton";
 import { usePagination, DOTS } from "../../utils/usePagination";
+import { MdNavigateNext, MdNavigateBefore } from "react-icons/md";
 
 export function Pagination({
   onPageChange,
@@ -33,7 +34,7 @@ export function Pagination({
         <RoundedButton
           onClick={onPrevious}
           disabled={currentPage === 1}
-          text={"<"}
+          text={<MdNavigateBefore className="text-xl" />}
         />
       </li>
       {paginationRange.map((pageNumber) => {
@@ -60,7 +61,7 @@ export function Pagination({
       <li key={">"}>
         <RoundedButton
           onClick={onNext}
-          text={">"}
+          text={<MdNavigateNext className="text-xl" />}
           disabled={currentPage === lastPage}
         />
       </li>
